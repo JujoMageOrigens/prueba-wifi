@@ -3,38 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de Foco</title>
+    <title>Control de Relé y LED</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 50px;
         }
         button {
-            font-size: 20px;
             padding: 10px 20px;
-            margin: 10px;
+            font-size: 18px;
             cursor: pointer;
+        }
+        .status {
+            margin-top: 20px;
+            font-size: 20px;
         }
     </style>
 </head>
 <body>
-
-    <h1>Control de Foco</h1>
-    <p>Presiona los botones para encender o apagar el foco.</p>
-
-    <button onclick="controlarFoco('ON')" style="background: green; color: white;">Encender</button>
-    <button onclick="controlarFoco('OFF')" style="background: red; color: white;">Apagar</button>
+    <h1>Control de Relé y LED</h1>
+    <button onclick="controlRelay('on')">Encender Relé</button>
+    <button onclick="controlRelay('off')">Apagar Relé</button>
+    <br><br>
+    <button onclick="controlLed('on')">Encender LED</button>
+    <button onclick="controlLed('off')">Apagar LED</button>
+    <br><br>
+    <button onclick="checkMotion()">Comprobar Movimiento</button>
+    <div id="motionStatus" class="status"></div>
 
     <script>
-        const IP_ESP32 = "http://192.168.1.52"; // Reemplázala con la IP real de tu ESP32
+        const baseUrl = 'http://192.168.1.52';  // Sustituye con la IP de tu ESP32
 
-        function controlarFoco(estado) {
-            fetch(`${IP_ESP32}/${estado}`)
-                .then(response => console.log(`Foco ${estado}`))
-                .catch(error => console.error("Error:", error));
+        function controlRelay(state) {
+            fetch(baseUrl + '/relay/' + state)
+                .then(response => response.text())
+                .then(data => alert(data));
+        }
+
+        function controlLed(state) {
+            fetch(baseUrl + '/led/' + state)
+                .then(response => response.text())
+                .then(data => alert(data));
+        }
+
+        function checkMotion() {
+            fetch(baseUrl + '/motion')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('motionStatus').innerText = data;
+                });
         }
     </script>
-
 </body>
 </html>
