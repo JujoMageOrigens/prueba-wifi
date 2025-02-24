@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Foco</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Control de Foco</h1>
+    <p>Presiona los botones para encender o apagar el foco.</p>
+
+    <button onclick="controlarFoco('ON')" style="background: green; color: white;">Encender</button>
+    <button onclick="controlarFoco('OFF')" style="background: red; color: white;">Apagar</button>
+
+    <script>
+        const IP_ESP32 = "http://192.168.1.52"; // Reemplázala con la IP real de tu ESP32
+
+        function controlarFoco(estado) {
+            fetch(`${IP_ESP32}/${estado}`)
+                .then(response => console.log(`Foco ${estado}`))
+                .catch(error => console.error("Error:", error));
+        }
+    </script>
+
+</body>
+</html>
